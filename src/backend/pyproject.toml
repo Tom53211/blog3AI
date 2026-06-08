@@ -1,0 +1,8 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Scraper and cron backend for AI Blog Aggregator"
+requires-python = ">=3.14"
+dependencies = [
+    "google-genai>=2.8.0",
+]
