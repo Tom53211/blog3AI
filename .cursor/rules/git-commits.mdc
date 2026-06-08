@@ -1,0 +1,86 @@
+---
+description: Automated git commits with conventional format and secret safety
+alwaysApply: true
+---
+
+# Git Commit Automation
+
+When the user asks you to commit (or says "commit when done"), you MUST use the git CLI to inspect changes before committing. Do not guess what changed.
+
+## Inspect before committing
+
+Run in parallel:
+- `git status`
+- `git diff` (unstaged)
+- `git diff --staged` (if anything is staged)
+- `git log -5 --oneline` (match existing message style)
+
+## Conventional Commits
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<optional scope>): <short imperative summary>
+
+<optional body explaining why, not what>
+```
+
+**Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `build`, `perf`
+
+**Scopes for this project:** `frontend`, `scraper`, or omit if cross-cutting
+
+**Examples:**
+- `feat(scraper): add DeepMind blog parser`
+- `fix(frontend): prevent duplicate article cards`
+- `chore: update firebase deploy config`
+
+- Subject line: imperative mood, ≤72 chars, no trailing period
+- Body: only when the "why" is not obvious from the diff
+
+## Multiple commits
+
+Split into separate commits when changes are logically independent (e.g. feature + tests, refactor + feature, chore + feat).
+
+Workflow:
+1. Group related files/hunks with `git add <paths>`
+2. Commit each group with its own conventional message
+3. Run `git status` after each commit to verify
+4. Do NOT create empty commits
+
+## Sensitive data — NEVER commit
+
+Before every `git add` / `git commit`, check for:
+
+**Filenames (never stage):**
+- `.env`, `.env.*`, `*.pem`, `*.key`, `credentials.json`, `serviceAccount*.json`
+- `firebase-adminsdk*.json`, `secrets.toml`, `.pypirc`
+- Any file matching `.gitignore` env/secret patterns
+
+**Content patterns (scan diff):**
+- API keys: `sk-`, `AKIA`, `AIza`, `ghp_`, `gho_`, `xoxb-`
+- Private keys: PEM block headers for RSA or generic private keys
+- Passwords/tokens in URLs or config literals
+
+If found:
+1. STOP — do not commit
+2. Warn the user with file path and pattern (not the secret value)
+3. Suggest adding to `.gitignore` or moving to env vars
+4. Only proceed after the user explicitly confirms it is safe
+
+## Commit execution
+
+Only commit when the user explicitly asks.
+
+```bash
+git add <relevant-files>
+git commit -m "$(cat <<'EOF'
+feat(scope): short summary
+
+Optional body.
+EOF
+)"
+git status
+```
+
+Never: `git config` changes, `--no-verify`, force push to main, amend pushed commits.
+Do not push unless explicitly asked.
