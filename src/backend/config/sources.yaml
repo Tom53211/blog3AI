@@ -1,0 +1,18 @@
+sources:
+  - id: anthropic
+    name: Anthropic
+    url: https://www.anthropic.com/research
+    prompt: prompts/anthropic.txt
+    enabled: true
+
+  - id: openai
+    name: OpenAI
+    url: https://openai.com/news
+    prompt: prompts/openai.txt
+    enabled: true
+
+  - id: deepmind
+    name: Google DeepMind
+    url: https://deepmind.google/discover/blog/
+    prompt: prompts/deepmind.txt
+    enabled: true

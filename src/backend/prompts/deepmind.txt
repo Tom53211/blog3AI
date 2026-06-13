@@ -1,0 +1,6 @@
+Extract all publication titles and exact full URLs from this Google DeepMind blog page.
+- URLs must be absolute (https://deepmind.google/...)
+- Ignore navigation, footer, and non-article links
+- Return only blog posts, not discover/category pages
+
+Content:

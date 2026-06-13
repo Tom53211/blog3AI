@@ -1,6 +1,7 @@
 import os
 
 from google import genai
+from loguru import logger
 
 PROJECT_ID = os.getenv("GOOGLE_PROJECT")
 
@@ -13,4 +14,4 @@ llm_client = genai.Client(
 response = llm_client.models.generate_content(
     model="gemini-3.5-flash", contents="Explain how AI works in a few words"
 )
-print(response.text)
+logger.info("{}", response.text)

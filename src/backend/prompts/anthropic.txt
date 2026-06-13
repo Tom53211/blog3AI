@@ -1,0 +1,6 @@
+Extract all publication titles and exact full URLs from this Anthropic research page.
+- URLs must be absolute (https://www.anthropic.com/...)
+- Ignore navigation, footer, and non-article links
+- Return only research publications, not press or careers pages
+
+Content:

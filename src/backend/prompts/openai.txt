@@ -1,0 +1,6 @@
+Extract all publication titles and exact full URLs from this OpenAI news page.
+- URLs must be absolute (https://openai.com/...)
+- Ignore navigation, footer, and non-article links
+- Return only news articles, not category or index listing pages
+
+Content:
