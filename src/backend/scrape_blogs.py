@@ -75,11 +75,11 @@ def scrape_all_sources() -> dict[str, BlogFeed]:
 if __name__ == "__main__":
     sources = {source.id: source for source in load_sources()}
 
-    anthropic_feed = scrape_and_parse_blog(sources["anthropic"])
-    logger.info(
-        "Results for anthropic:\n{}",
-        json.dumps(anthropic_feed.model_dump(), indent=2),
-    )
+    # anthropic_feed = scrape_and_parse_blog(sources["anthropic"])
+    # logger.info(
+    #     "Results for anthropic:\n{}",
+    #     json.dumps(anthropic_feed.model_dump(), indent=2),
+    # )
 
     # openai_feed = scrape_and_parse_blog(sources["openai"])
     # logger.info(
@@ -87,8 +87,8 @@ if __name__ == "__main__":
     #     json.dumps(openai_feed.model_dump(), indent=2),
     # )
 
-    # deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
-    # logger.info(
-    #     "Results for deepmind:\n{}",
-    #     json.dumps(deepmind_feed.model_dump(), indent=2),
-    # )
+    deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
+    logger.info(
+        "Results for deepmind:\n{}",
+        json.dumps(deepmind_feed.model_dump(), indent=2),
+    )
