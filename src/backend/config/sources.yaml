@@ -7,12 +7,12 @@ sources:
 
   - id: openai
     name: OpenAI
-    url: https://openai.com/news
+    url: https://developers.openai.com/blog
     prompt: prompts/openai.txt
     enabled: true
 
   - id: deepmind
     name: Google DeepMind
-    url: https://deepmind.google/discover/blog/
+    url: https://deepmind.google/blog/
     prompt: prompts/deepmind.txt
     enabled: true
