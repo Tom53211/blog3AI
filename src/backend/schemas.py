@@ -4,10 +4,11 @@ from pydantic import BaseModel, Field
 class BlogPost(BaseModel):
     title: str = Field(description="The title of the blog post")
     url: str = Field(description="The absolute URL link to the blog post")
-    published_month: str | None = Field(
+    published_date: str | None = Field(
         default=None,
         description=(
-            "Publication date normalized to 'YYYY-MM' (year and month only). "
+            "Publication date normalized to 'YYYY-MM-DD' (year, month, and day). "
+            "If only month and year are shown, set day to '01'. "
             "Null if no date is shown for the post."
         ),
     )
@@ -23,6 +24,7 @@ class BlogSource(BaseModel):
     url: str
     prompt: str
     enabled: bool = True
+    rss_feed: str | None = None
 
 
 class SourcesConfig(BaseModel):

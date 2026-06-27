@@ -3,9 +3,9 @@ Extract all publication titles and exact full URLs from this Google DeepMind blo
 - Ignore navigation, footer, and non-article links
 - Return only blog posts, not discover/category pages
 
-Also extract each post's publication date as a "YYYY-MM" string (year and month only;
-ignore the day). If a post shows no year, infer it from today's date, choosing the most
-recent year in which that month has already occurred (never a future month). If no date
-is shown for a post, set it to null.
+Also extract each post's publication date as a "YYYY-MM-DD" string. If the day is not
+shown, use "01" for the day. If no year is shown, infer it from today's date, choosing
+the most recent year in which that month has already occurred (never a future month).
+If no date is shown for a post, set it to null.
 
 Content:
