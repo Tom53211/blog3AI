@@ -10,3 +10,6 @@ backend-sync: ## Create/update backend venv and install dependencies with uv syn
 
 backend-main: ## Run the backend main script
 	uv run --directory src/backend --env-file ../../.env python main.py
+
+backend-scrape: ## Run the backend scrape script
+	uv run --directory src/backend --env-file ../../.env python scrape_blogs.py
