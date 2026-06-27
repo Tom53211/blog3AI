@@ -1,3 +1,4 @@
+import os
 from datetime import UTC, datetime
 from urllib.parse import quote
 
@@ -13,7 +14,9 @@ _app: firebase_admin.App | None = None
 def _get_db() -> firestore.Client:
     global _app
     if _app is None:
-        _app = firebase_admin.initialize_app()
+        _app = firebase_admin.initialize_app(
+            options={"projectId": os.environ["GOOGLE_CLOUD_PROJECT"]}
+        )
     return firestore.client()
 
 
