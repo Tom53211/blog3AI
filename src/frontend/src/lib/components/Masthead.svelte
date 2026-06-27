@@ -13,7 +13,7 @@
 </script>
 
 <header class="masthead">
-	<h1>The AI Record</h1>
+	<h1>Blog3AI</h1>
 	<p class="mono sub">
 		<span>{total} {total === 1 ? 'entry' : 'entries'}</span>
 		{#if updated}

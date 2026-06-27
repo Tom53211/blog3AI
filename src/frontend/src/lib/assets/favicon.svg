@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-	<title>The AI Record</title>
+	<title>Blog3AI</title>
 	<rect width="32" height="32" rx="6.5" fill="#cc785c" />
-	<text x="16.5" y="24.5" text-anchor="middle" fill="#f0eee6"
+	<text x="16" y="22" text-anchor="middle" fill="#f0eee6"
 		font-family="Newsreader, Georgia, 'Times New Roman', serif"
-		font-style="italic" font-weight="500" font-size="25">R</text>
+		font-style="italic" font-weight="500" font-size="18" letter-spacing="0.5">AI</text>
 </svg>

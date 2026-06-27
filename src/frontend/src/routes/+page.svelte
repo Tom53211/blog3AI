@@ -39,7 +39,7 @@
 </script>
 
 <svelte:head>
-	<title>The AI Record</title>
+	<title>Blog3AI</title>
 	<meta
 		name="description"
 		content="A running index of posts from Anthropic, OpenAI, and Google DeepMind."
