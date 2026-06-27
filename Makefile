@@ -7,7 +7,7 @@ IMAGE := $(GCP_REGION)-docker.pkg.dev/$(GOOGLE_CLOUD_PROJECT)/$(AR_REPO)/backend
 
 .PHONY: help backend-sync backend-main backend-scrape docker-build docker-run \
         gcp-setup secrets-create docker-push job-deploy job-run scheduler-create \
-        frontend-dev frontend-build frontend-deploy
+        frontend-dev frontend-build frontend-deploy deploy-all
 
 help: ## Show available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -98,3 +98,5 @@ frontend-build: ## Build the static SvelteKit frontend into src/frontend/build
 
 frontend-deploy: frontend-build ## Build and deploy the frontend to Firebase Hosting
 	firebase deploy --only hosting
+
+deploy-all: job-deploy frontend-deploy ## Deploy everything: Cloud Run job and frontend
