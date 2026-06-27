@@ -14,11 +14,11 @@ def main() -> None:
     anthropic_feed = scrape_and_parse_blog(sources["anthropic"])
     store_feed(sources["anthropic"], anthropic_feed)
 
-    # openai_feed = scrape_and_parse_blog(sources["openai"])
-    # store_feed(sources["openai"], openai_feed)
+    openai_feed = scrape_and_parse_blog(sources["openai"])
+    store_feed(sources["openai"], openai_feed)
 
-    # deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
-    # store_feed(sources["deepmind"], deepmind_feed)
+    deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
+    store_feed(sources["deepmind"], deepmind_feed)
 
     logger.info("Pipeline complete")
 
