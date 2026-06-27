@@ -35,15 +35,7 @@
 	let visible = $derived(posts.filter((p) => filters[p.source_id]));
 	let noneSelected = $derived(!filters.anthropic && !filters.openai && !filters.deepmind);
 
-	// Group by month, then assign continuous newest-first ordinals across groups.
-	let groups = $derived.by(() => {
-		let n = 0;
-		return sortAndGroup(visible).map((g) => {
-			const start = n;
-			n += g.posts.length;
-			return { ...g, start };
-		});
-	});
+	let groups = $derived(sortAndGroup(visible));
 </script>
 
 <svelte:head>
@@ -74,7 +66,7 @@
 			{#each groups as group (group.label)}
 				<MonthDivider label={group.label} count={group.posts.length} />
 				{#each group.posts as post, i (post.url)}
-					<EntryRow ordinal={group.start + i + 1} {post} />
+					<EntryRow {post} />
 				{/each}
 			{/each}
 		</section>
