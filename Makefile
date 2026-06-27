@@ -6,7 +6,8 @@ export
 IMAGE := $(GCP_REGION)-docker.pkg.dev/$(GOOGLE_CLOUD_PROJECT)/$(AR_REPO)/backend
 
 .PHONY: help backend-sync backend-main backend-scrape docker-build docker-run \
-        gcp-setup secrets-create docker-push job-deploy job-run scheduler-create
+        gcp-setup secrets-create docker-push job-deploy job-run scheduler-create \
+        frontend-dev
 
 help: ## Show available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -88,3 +89,6 @@ scheduler-create: ## Create Cloud Scheduler job to trigger scrape-blogs daily at
 		--http-method=POST \
 		--oauth-service-account-email=$(PROJECT_NUMBER)-compute@developer.gserviceaccount.com \
 		--project=$(GOOGLE_CLOUD_PROJECT)
+
+frontend-dev: ## Start the SvelteKit dev server
+	npm run dev --prefix src/frontend
