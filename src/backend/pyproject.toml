@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Scraper and cron backend for AI Blog Aggregator"
 requires-python = ">=3.14"
 dependencies = [
+    "firebase-admin>=6.5.0",
     "firecrawl-py>=4.28.2",
     "google-genai>=2.8.0",
     "loguru>=0.7.3",

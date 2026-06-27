@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: blogs
+    // Document ID: URL-encoded post URL (e.g., "https%3A%2F%2F...")
+    // Fields:
+    //   - title:       string    (required, 1-500 chars)
+    //   - url:         string    (required, https URL, 1-2000 chars)
+    //   - source_id:   string    (required, one of: "anthropic", "openai", "deepmind")
+    //   - source_name: string    (required, 1-100 chars)
+    //   - scraped_at:  timestamp (required)
+    //
+    // Writes: backend only via Firebase Admin SDK (bypasses these rules entirely)
+    // Reads:  public — this is a public blog aggregator with no PII
+    //
+    // ===============================================================
+
+    match /blogs/{postId} {
+      // Public read — no PII, this is a public feed
+      allow read: if true;
+
+      // All client writes denied; backend uses Admin SDK which bypasses rules
+      allow write: if false;
+    }
+
+    // Default deny for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

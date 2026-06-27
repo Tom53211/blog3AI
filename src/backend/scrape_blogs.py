@@ -38,7 +38,7 @@ def scrape_and_parse_blog(source: BlogSource) -> BlogFeed:
 
     prompt_template = load_prompt(source.prompt)
     response = ai_client.models.generate_content(
-        model="gemini-3.5-flash",
+        model="gemini-2.5-flash",
         contents=f"{prompt_template}\n\n{markdown_content}",
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
@@ -51,16 +51,6 @@ def scrape_and_parse_blog(source: BlogSource) -> BlogFeed:
         raise ValueError(f"Failed to parse response: {response.text}")
 
     return response.parsed
-
-
-def scrape_all_sources() -> dict[str, BlogFeed]:
-    results: dict[str, BlogFeed] = {}
-    for source in load_sources():
-        try:
-            results[source.id] = scrape_and_parse_blog(source)
-        except Exception:
-            logger.exception("Failed to scrape {}", source.id)
-    return results
 
 
 if __name__ == "__main__":

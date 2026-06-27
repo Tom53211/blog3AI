@@ -1,9 +1,23 @@
-from google import genai
 from loguru import logger
 
-llm_client = genai.Client()
+from firestore_store import store_feed
+from scrape_blogs import load_sources, scrape_and_parse_blog
 
-response = llm_client.models.generate_content(
-    model="gemini-3.5-flash", contents="Explain how AI works in a few words"
-)
-logger.info("{}", response.text)
+
+def main() -> None:
+    sources = {source.id: source for source in load_sources()}
+
+    # anthropic_feed = scrape_and_parse_blog(sources["anthropic"])
+    # store_feed(sources["anthropic"], anthropic_feed)
+
+    # openai_feed = scrape_and_parse_blog(sources["openai"])
+    # store_feed(sources["openai"], openai_feed)
+
+    deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
+    store_feed(sources["deepmind"], deepmind_feed)
+
+    logger.info("Pipeline complete")
+
+
+if __name__ == "__main__":
+    main()
