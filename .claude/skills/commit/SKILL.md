@@ -1,6 +1,10 @@
-# Git Commit
+---
+name: commit
+description: Create a git commit following Conventional Commits. Use when the user asks to commit, stage and commit, or make a commit.
+allowed-tools: Bash(git status), Bash(git diff), Bash(git diff --staged), Bash(git log:*), Bash(git add:*), Bash(git commit:*)
+---
 
-Inspect changes and commit following Conventional Commits. Only commit when explicitly asked.
+# Git Commit
 
 ## Step 1 — Inspect (run in parallel)
 

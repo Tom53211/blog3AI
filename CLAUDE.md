@@ -1,15 +1,17 @@
-# Claude Code Instructions
+# CLAUDE.md
 
-## Committing
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Use `/commit` for the full commit workflow.
+## Project Overview
 
-Key rules always in effect:
-- Run `git status` + `git diff` before committing — never guess what changed
-- Use [Conventional Commits](https://www.conventionalcommits.org/) format: `type(scope): summary`
-- Scopes for this project: `frontend`, `scraper`, `backend` — omit if cross-cutting
-- Split logically independent changes into separate commits
-- Never commit `.env`, `*.pem`, `*.key`, `credentials.json`, or any secret/credential file
-- Never push unless explicitly asked
+AI Blog Aggregator — scrapes the official blogs of Anthropic, OpenAI, and Google DeepMind, parses posts with Gemini (structured JSON output), and stores them in Firebase Firestore. The SvelteKit frontend (not yet in this repo) reads from Firestore and displays a unified feed.
 
-Pre-commit hooks run `detect-secrets` — if they fire, stop and investigate before retrying.
+## Architecture
+
+**Pipeline flow:** Cloud Scheduler → Cloud Run Job → `scrape_blogs.py` → Firestore ← SvelteKit frontend
+
+**Key design decisions:**
+- Firecrawl converts each blog page to markdown before it reaches Gemini — keeps prompts simple and avoids HTML parsing
+- Gemini structured output (`response_schema=BlogFeed`) guarantees the response parses directly into Pydantic models
+- Firestore document ID = post URL, so upserting is idempotent
+
