@@ -1,22 +1,16 @@
 <script lang="ts">
-	import { LOGOS } from '$lib/logos';
-	import type { SourceId } from '$lib/types';
+	import { LABS } from '$lib/labs';
+	import type { LabId } from '$lib/types';
 
-	let { active = $bindable() }: { active: Record<SourceId, boolean> } = $props();
+	let { active = $bindable() }: { active: Record<LabId, boolean> } = $props();
 
-	const labs: { id: SourceId; name: string }[] = [
-		{ id: 'anthropic', name: 'Anthropic' },
-		{ id: 'openai', name: 'OpenAI' },
-		{ id: 'deepmind', name: 'DeepMind' }
-	];
-
-	function toggle(id: SourceId) {
+	function toggle(id: LabId) {
 		active = { ...active, [id]: !active[id] };
 	}
 </script>
 
 <div class="filter" role="group" aria-label="Filter by lab">
-	{#each labs as lab (lab.id)}
+	{#each LABS as lab (lab.id)}
 		<button
 			type="button"
 			class="chip"
@@ -24,7 +18,7 @@
 			aria-pressed={active[lab.id]}
 			onclick={() => toggle(lab.id)}
 		>
-			<span class="logo" aria-hidden="true">{@html LOGOS[lab.id]}</span>
+			<span class="logo" aria-hidden="true">{@html lab.logo}</span>
 			<span class="name mono">{lab.name}</span>
 		</button>
 	{/each}

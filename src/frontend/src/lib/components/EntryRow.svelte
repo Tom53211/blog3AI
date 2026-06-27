@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { LOGOS } from '$lib/logos';
+	import { LAB_LOGOS, labForSource } from '$lib/labs';
 	import type { BlogPost } from '$lib/types';
 
 	let { post }: { post: BlogPost } = $props();
+
+	let logo = $derived(labForSource(post.source_id));
 
 	let shortDate = $derived(
 		post.published_date
@@ -18,7 +20,7 @@
 	rel="noopener noreferrer"
 	aria-label={`${post.title} — ${post.source_name}`}
 >
-	<span class="logo" aria-hidden="true">{@html LOGOS[post.source_id]}</span>
+	<span class="logo" aria-hidden="true">{#if logo}{@html LAB_LOGOS[logo]}{/if}</span>
 	<span class="title">{post.title}</span>
 	<span class="month mono" aria-hidden="true">{shortDate}</span>
 </a>

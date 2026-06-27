@@ -3,24 +3,34 @@ sources:
     name: Anthropic
     url: https://www.anthropic.com/research
     prompt: prompts/anthropic.txt
-    enabled: true
+    enabled: false
 
   - id: anthropic_news
     name: Anthropic
     url: https://www.anthropic.com/news
     prompt: prompts/anthropic_news.txt
-    enabled: true
+    enabled: false
 
   - id: openai
     name: OpenAI
     url: https://openai.com/news/?display=list
-    prompt: prompts/openai.txt
     rss_feed: https://openai.com/news/rss.xml
     enabled: true
 
   - id: deepmind
     name: Google DeepMind
     url: https://deepmind.google/blog/
-    prompt: prompts/deepmind.txt
     rss_feed: https://deepmind.google/blog/rss.xml
+    enabled: true
+
+  - id: google_dev_tools
+    name: Google
+    url: https://blog.google/innovation-and-ai/technology/developers-tools/
+    rss_feed: https://blog.google/innovation-and-ai/technology/developers-tools/rss/
+    enabled: true
+
+  - id: google_research
+    name: Google
+    url: https://blog.google/innovation-and-ai/technology/research/
+    rss_feed: https://blog.google/innovation-and-ai/technology/research/rss/
     enabled: true

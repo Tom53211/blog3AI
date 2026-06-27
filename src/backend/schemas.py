@@ -22,7 +22,7 @@ class BlogSource(BaseModel):
     id: str
     name: str
     url: str
-    prompt: str
+    prompt: str | None = None
     enabled: bool = True
     rss_feed: str | None = None
 

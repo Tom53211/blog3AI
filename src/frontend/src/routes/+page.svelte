@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fetchBlogs, sortAndGroup } from '$lib/blogs';
-	import type { BlogPost, SourceId } from '$lib/types';
+	import { LABS, labForSource } from '$lib/labs';
+	import type { BlogPost, LabId } from '$lib/types';
 	import Masthead from '$lib/components/Masthead.svelte';
 	import LabFilter from '$lib/components/LabFilter.svelte';
 	import MonthDivider from '$lib/components/MonthDivider.svelte';
@@ -11,11 +12,9 @@
 	let loading = $state(true);
 	let failed = $state(false);
 
-	let filters = $state<Record<SourceId, boolean>>({
-		anthropic: true,
-		openai: true,
-		deepmind: true
-	});
+	let filters = $state<Record<LabId, boolean>>(
+		Object.fromEntries(LABS.map((lab) => [lab.id, true])) as Record<LabId, boolean>
+	);
 
 	onMount(async () => {
 		try {
@@ -32,8 +31,13 @@
 		posts.length ? new Date(Math.max(...posts.map((p) => p.scraped_at.getTime()))) : null
 	);
 
-	let visible = $derived(posts.filter((p) => filters[p.source_id]));
-	let noneSelected = $derived(!filters.anthropic && !filters.openai && !filters.deepmind);
+	let visible = $derived(
+		posts.filter((p) => {
+			const lab = labForSource(p.source_id);
+			return lab ? filters[lab] : false;
+		})
+	);
+	let noneSelected = $derived(!Object.values(filters).some(Boolean));
 
 	let groups = $derived(sortAndGroup(visible));
 </script>
@@ -42,7 +46,7 @@
 	<title>Blog3AI</title>
 	<meta
 		name="description"
-		content="A running index of posts from Anthropic, OpenAI, and Google DeepMind."
+		content="A running index of posts from Anthropic, OpenAI, Google DeepMind, and Google."
 	/>
 </svelte:head>
 
@@ -73,7 +77,7 @@
 	{/if}
 
 	<footer class="foot">
-		<span class="eyebrow">Anthropic · OpenAI · Google DeepMind</span>
+		<span class="eyebrow">{LABS.map((lab) => lab.name).join(' · ')}</span>
 	</footer>
 </main>
 

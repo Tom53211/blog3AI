@@ -1,4 +1,9 @@
-export type SourceId = 'anthropic' | 'openai' | 'deepmind';
+/**
+ * A lab the UI groups posts under. Distinct from a Firestore `source_id`: a
+ * single lab can span several feeds (Google publishes from more than one blog),
+ * so {@link labForSource} maps raw source ids onto these.
+ */
+export type LabId = 'anthropic' | 'openai' | 'deepmind' | 'google';
 
 /** A single scraped blog post, as stored in the Firestore `blogs` collection. */
 export interface BlogPost {
@@ -6,7 +11,8 @@ export interface BlogPost {
 	url: string;
 	/** "YYYY-MM-DD", or null when the source showed no date. */
 	published_date: string | null;
-	source_id: SourceId;
+	/** Raw Firestore feed id, e.g. "google_research". Group via {@link labForSource}. */
+	source_id: string;
 	source_name: string;
 	/** When the scraper last saw this post. */
 	scraped_at: Date;
