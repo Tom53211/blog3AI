@@ -29,6 +29,7 @@ def store_feed(source: BlogSource, feed: BlogFeed) -> None:
             col.document(doc_id).set({
                 "title": post.title,
                 "url": post.url,
+                "published_month": post.published_month,
                 "source_id": source.id,
                 "source_name": source.name,
                 "scraped_at": scraped_at,

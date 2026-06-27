@@ -3,4 +3,9 @@ Extract all publication titles and exact full URLs from this Anthropic research 
 - Ignore navigation, footer, and non-article links
 - Return only research publications, not press or careers pages
 
+Also extract each post's publication date as a "YYYY-MM" string (year and month only;
+ignore the day). If a post shows no year, infer it from today's date, choosing the most
+recent year in which that month has already occurred (never a future month). If no date
+is shown for a post, set it to null.
+
 Content:

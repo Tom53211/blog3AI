@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -37,9 +38,15 @@ def scrape_and_parse_blog(source: BlogSource) -> BlogFeed:
     logger.info("Parsing {} content with Gemini...", source.name)
 
     prompt_template = load_prompt(source.prompt)
+    today = datetime.now(UTC).date()
+    contents = (
+        f"{prompt_template}\n\n"
+        f"Today's date is {today:%Y-%m-%d}.\n\n"
+        f"{markdown_content}"
+    )
     response = ai_client.models.generate_content(
         model="gemini-2.5-flash",
-        contents=f"{prompt_template}\n\n{markdown_content}",
+        contents=contents,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
             response_schema=BlogFeed,
@@ -62,14 +69,14 @@ if __name__ == "__main__":
     #     json.dumps(anthropic_feed.model_dump(), indent=2),
     # )
 
-    # openai_feed = scrape_and_parse_blog(sources["openai"])
-    # logger.info(
-    #     "Results for openai:\n{}",
-    #     json.dumps(openai_feed.model_dump(), indent=2),
-    # )
-
-    deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
+    openai_feed = scrape_and_parse_blog(sources["openai"])
     logger.info(
-        "Results for deepmind:\n{}",
-        json.dumps(deepmind_feed.model_dump(), indent=2),
+        "Results for openai:\n{}",
+        json.dumps(openai_feed.model_dump(), indent=2),
     )
+
+    # deepmind_feed = scrape_and_parse_blog(sources["deepmind"])
+    # logger.info(
+    #     "Results for deepmind:\n{}",
+    #     json.dumps(deepmind_feed.model_dump(), indent=2),
+    # )
