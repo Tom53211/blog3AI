@@ -15,3 +15,7 @@ AI Blog Aggregator — scrapes the official blogs of Anthropic, OpenAI, and Goog
 - Gemini structured output (`response_schema=BlogFeed`) guarantees the response parses directly into Pydantic models
 - Firestore document ID = post URL, so upserting is idempotent
 
+## Frontend Tasks
+
+For any UI or visual design work on the SvelteKit frontend, invoke the `frontend-design` skill first (`/frontend-design`) before making design decisions or implementing UI changes.
+
