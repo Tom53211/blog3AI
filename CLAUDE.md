@@ -4,15 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Blog Aggregator — scrapes the official blogs of Anthropic, OpenAI, and Google DeepMind, parses posts with Gemini (structured JSON output), and stores them in Firebase Firestore. The SvelteKit frontend (not yet in this repo) reads from Firestore and displays a unified feed.
+AI Blog Aggregator — collects posts from the official blogs of Anthropic, OpenAI, Google, and Google DeepMind and stores them in Firebase Firestore. The SvelteKit frontend (`src/frontend/`) reads from Firestore and displays a unified feed.
+
+## Layout
+
+- `src/backend/` — Python scraper, run as a Cloud Run Job
+- `src/frontend/` — SvelteKit SPA, deployed on Firebase Hosting
+- `src/backend/config/sources.yaml` — the blog sources and their fetch method
 
 ## Architecture
 
 **Pipeline flow:** Cloud Scheduler → Cloud Run Job → `scrape_blogs.py` → Firestore ← SvelteKit frontend
 
 **Key design decisions:**
-- Firecrawl converts each blog page to markdown before it reaches Gemini — keeps prompts simple and avoids HTML parsing
-- Gemini structured output (`response_schema=BlogFeed`) guarantees the response parses directly into Pydantic models
+- Each source is fetched via RSS when a `rss_feed` is set; otherwise Firecrawl converts the page to markdown and Gemini parses it (structured output via `response_schema=BlogFeed`, so the response maps directly to Pydantic models)
 - Firestore document ID = post URL, so upserting is idempotent
 
 ## Frontend Tasks
