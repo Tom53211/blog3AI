@@ -13,17 +13,8 @@ from schemas import BlogFeed, BlogSource, SourcesConfig
 BACKEND_DIR = Path(__file__).parent
 SOURCES_PATH = BACKEND_DIR / "config" / "sources.yaml"
 
-PROJECT_ID = os.getenv("GOOGLE_PROJECT")
-REGION = os.getenv("GOOGLE_REGION")
-logger.debug("PROJECT_ID: {}", PROJECT_ID)
-logger.debug("REGION: {}", REGION)
-
 firecrawl_client = Firecrawl()
-ai_client = genai.Client(
-    vertexai=True,
-    project=PROJECT_ID,
-    location=REGION,
-)
+ai_client = genai.Client()
 
 
 def load_sources() -> list[BlogSource]:
@@ -43,7 +34,7 @@ def scrape_and_parse_blog(source: BlogSource) -> BlogFeed:
     scrape_result = firecrawl_client.scrape(source.url, formats=["markdown"])
     markdown_content = scrape_result.markdown or ""
 
-    logger.info("Parsing {} content with Gemini on Vertex AI...", source.name)
+    logger.info("Parsing {} content with Gemini...", source.name)
 
     prompt_template = load_prompt(source.prompt)
     response = ai_client.models.generate_content(
