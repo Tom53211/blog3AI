@@ -6,10 +6,10 @@ export
 IMAGE := $(GCP_REGION)-docker.pkg.dev/$(GOOGLE_CLOUD_PROJECT)/$(AR_REPO)/backend
 
 .PHONY: help backend-sync backend-main backend-scrape docker-build docker-run \
-        gcp-setup secrets-create docker-push job-deploy job-run
+        gcp-setup secrets-create docker-push job-deploy job-run scheduler-create
 
 help: ## Show available targets
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
+	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
 backend-sync: ## Create/update backend venv and install dependencies with uv sync
 	uv sync --directory src/backend
@@ -45,6 +45,10 @@ gcp-setup: ## Enable GCP APIs, create Artifact Registry repo, grant Secret Manag
 	gcloud projects add-iam-policy-binding $(GOOGLE_CLOUD_PROJECT) \
 		--member="serviceAccount:$(PROJECT_NUMBER)-compute@developer.gserviceaccount.com" \
 		--role=roles/secretmanager.secretAccessor
+	gcloud projects add-iam-policy-binding $(GOOGLE_CLOUD_PROJECT) \
+		--member="serviceAccount:$(PROJECT_NUMBER)-compute@developer.gserviceaccount.com" \
+		--role=roles/run.invoker
+	gcloud services enable cloudscheduler.googleapis.com --project=$(GOOGLE_CLOUD_PROJECT)
 
 secrets-create: ## Store FIRECRAWL_API_KEY and GOOGLE_API_KEY in Secret Manager (safe to re-run)
 	@FIRECRAWL_KEY=$$(grep -oP 'FIRECRAWL_API_KEY=\K.*' .env); \
@@ -74,3 +78,13 @@ job-run: ## Manually trigger the Cloud Run job and wait for completion
 		--project=$(GOOGLE_CLOUD_PROJECT) \
 		--region=$(GCP_REGION) \
 		--wait
+
+scheduler-create: ## Create Cloud Scheduler job to trigger scrape-blogs daily at 17:00 UTC (10 AM PDT)
+	$(eval PROJECT_NUMBER := $(shell gcloud projects describe $(GOOGLE_CLOUD_PROJECT) --format='value(projectNumber)'))
+	gcloud scheduler jobs create http scrape-blogs-schedule \
+		--location=$(GCP_REGION) \
+		--schedule="0 17 * * *" \
+		--uri="https://$(GCP_REGION)-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/$(GOOGLE_CLOUD_PROJECT)/jobs/$(JOB_NAME):run" \
+		--http-method=POST \
+		--oauth-service-account-email=$(PROJECT_NUMBER)-compute@developer.gserviceaccount.com \
+		--project=$(GOOGLE_CLOUD_PROJECT)
