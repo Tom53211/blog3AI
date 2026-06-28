@@ -3,13 +3,13 @@ sources:
     name: Anthropic
     url: https://www.anthropic.com/research
     prompt: prompts/anthropic.txt
-    enabled: false
+    enabled: true
 
   - id: anthropic_news
     name: Anthropic
     url: https://www.anthropic.com/news
     prompt: prompts/anthropic_news.txt
-    enabled: false
+    enabled: true
 
   - id: openai
     name: OpenAI
