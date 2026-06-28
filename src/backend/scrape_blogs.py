@@ -17,7 +17,18 @@ BACKEND_DIR = Path(__file__).parent
 SOURCES_PATH = BACKEND_DIR / "config" / "sources.yaml"
 
 firecrawl_client = Firecrawl()
-ai_client = genai.Client()
+ai_client = genai.Client(
+    http_options=types.HttpOptions(
+        retry_options=types.HttpRetryOptions(
+            attempts=5,
+            initial_delay=2.0,
+            max_delay=120.0,
+            exp_base=2.0,
+            jitter=1.0,
+            http_status_codes=[429, 500, 502, 503, 504],
+        )
+    )
+)
 
 
 def load_sources() -> list[BlogSource]:
